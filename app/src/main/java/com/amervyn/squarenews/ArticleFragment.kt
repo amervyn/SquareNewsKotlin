@@ -10,15 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.amervyn.squarenews.dummy.DummyContent
-import com.amervyn.squarenews.dummy.DummyContent.DummyItem
+import com.amervyn.squarenews.article.ArticleContent
+import com.amervyn.squarenews.article.ArticleContent.ArticleItem
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [ItemFragment.OnListFragmentInteractionListener] interface.
+ * [ArticleFragment.OnListFragmentInteractionListener] interface.
  */
-class ItemFragment : Fragment() {
+class ArticleFragment : Fragment() {
 
     // TODO: Customize parameters
     private var columnCount = 1
@@ -35,7 +35,7 @@ class ItemFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_article_list, container, false)
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -44,7 +44,7 @@ class ItemFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                adapter = ArticleRecyclerViewAdapter(ArticleContent.ITEMS, listener)
             }
         }
         return view
@@ -77,7 +77,7 @@ class ItemFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: ArticleItem?)
     }
 
     companion object {
@@ -88,7 +88,7 @@ class ItemFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-                ItemFragment().apply {
+                ArticleFragment().apply {
                     arguments = Bundle().apply {
                         putInt(ARG_COLUMN_COUNT, columnCount)
                     }

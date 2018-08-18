@@ -7,26 +7,26 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 
-import com.amervyn.squarenews.ItemFragment.OnListFragmentInteractionListener
-import com.amervyn.squarenews.dummy.DummyContent.DummyItem
+import com.amervyn.squarenews.ArticleFragment.OnListFragmentInteractionListener
+import com.amervyn.squarenews.article.ArticleContent.ArticleItem
 
-import kotlinx.android.synthetic.main.fragment_item.view.*
+import kotlinx.android.synthetic.main.fragment_article.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [ArticleItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
-class MyItemRecyclerViewAdapter(
-        private val mValues: List<DummyItem>,
+class ArticleRecyclerViewAdapter(
+        private val mValues: List<ArticleItem>,
         private val mListener: OnListFragmentInteractionListener?)
-    : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<ArticleRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyItem
+            val item = v.tag as ArticleItem
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -35,7 +35,7 @@ class MyItemRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_item, parent, false)
+                .inflate(R.layout.fragment_article, parent, false)
         return ViewHolder(view)
     }
 

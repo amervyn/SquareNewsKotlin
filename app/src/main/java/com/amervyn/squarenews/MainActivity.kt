@@ -2,13 +2,12 @@ package com.amervyn.squarenews
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import kotlinx.android.synthetic.main.activity_scrolling.*
+import com.amervyn.squarenews.article.ArticleContent
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
-import java.net.InetSocketAddress
-import java.net.Proxy
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,21 +16,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-        CallApi()
+
+        callApi()
     }
 
 
-    private fun CallApi() {
+    private fun callApi() {
+
         println("calling api")
 
-        val proxyTest = Proxy(Proxy.Type.HTTP, InetSocketAddress("192.168.51.99", 3128))
+        //val proxyTest = Proxy(Proxy.Type.HTTP, InetSocketAddress("192.168.51.99", 3128))
 
-        val builder= OkHttpClient.Builder().proxy(proxyTest)
-        val client=builder.build()
+        //val builder= OkHttpClient.Builder().proxy(proxyTest)
+        val client=OkHttpClient()
 
         val request = Request.Builder()
                 .url(url)
@@ -47,7 +44,10 @@ class MainActivity : AppCompatActivity() {
 
                 val responseData= response.body()?.string()
                 println(responseData)
-                val json = JSONObject(responseData)
+                //val json = JSONObject(responseData)
+                val gson=GsonBuilder().create()
+
+                val articleFeed=gson.fromJson(responseData, ArticleContent.ArticleItem::class.java)
 
                 if (!response.isSuccessful)
                 {
