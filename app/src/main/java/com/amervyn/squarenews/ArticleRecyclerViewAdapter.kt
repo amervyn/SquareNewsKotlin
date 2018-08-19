@@ -17,9 +17,7 @@ import kotlinx.android.synthetic.main.fragment_article.view.*
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
-class ArticleRecyclerViewAdapter(
-        private val mValues: List<ArticleItem>,
-        private val mListener: OnListFragmentInteractionListener?)
+class ArticleRecyclerViewAdapter(private val mValues: List<ArticleItem>, private val mListener: OnListFragmentInteractionListener?)
     : RecyclerView.Adapter<ArticleRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
@@ -41,8 +39,8 @@ class ArticleRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.text = item.id
-        holder.mContentView.text = item.content
+        holder.mIdView.text = item.Headline
+        holder.mContentView.text = item.Description
 
         with(holder.mView) {
             tag = item
