@@ -3,9 +3,9 @@
 buildscript {
     ext.kotlin_version = '1.2.60'
     repositories {
+        google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
-        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
@@ -19,8 +19,8 @@ apply plugin: 'kotlin'
 
 allprojects {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 }
 
@@ -28,6 +28,8 @@ allprojects {
     delete rootProject.buildDir
 }*/
 repositories {
+    google()
+    jcenter()
     mavenCentral()
 }
 dependencies {

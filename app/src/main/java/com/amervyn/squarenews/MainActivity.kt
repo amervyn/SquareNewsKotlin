@@ -10,12 +10,15 @@ import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 import android.R.attr.duration
+import android.R.attr.layout
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import java.time.LocalDateTime
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
-
-
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import android.widget.LinearLayout
 
 
 class ArticleResult(val TotalResults : Int, val Articles : List<ArticleItem>) {
@@ -34,10 +37,12 @@ class ArticleItem(val ArticleId : Int, val SourceId: Int, val NewsApiSourceId: S
 class MainActivity : AppCompatActivity() {
 
     val url="http://amervyn.duckdns.org/api/Articles"
+    private var aResult: ArticleResult? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         //callApi()
     }
 
@@ -47,6 +52,12 @@ class MainActivity : AppCompatActivity() {
         val toast=Toast.makeText(applicationContext, "calling api...", Toast.LENGTH_SHORT)
         toast.show()
         callApi()
+
+        /*val recyclerAdapter=ArticlesRecyclerAdapter(this, this!!.aResult!!)
+        val recyclerView=findViewById<View>(R.id.rvArticles) as RecyclerView
+
+        recyclerView.adapter=recyclerAdapter
+        recyclerView.layoutManager=LinearLayoutManager(this)*/
     }
 
 
@@ -105,6 +116,8 @@ class MainActivity : AppCompatActivity() {
                         runOnUiThread {
                             val toast=Toast.makeText(applicationContext, articleFeed.TotalResults.toString(), Toast.LENGTH_SHORT)
                             toast.show()
+
+                            aResult=articleFeed
                         }
                     }
 
