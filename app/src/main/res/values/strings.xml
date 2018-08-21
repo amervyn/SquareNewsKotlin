@@ -1,5 +1,16 @@
 <resources>
-    <string name="app_name">Spool News</string>
+    <string name="app_name">Black Fish (News)</string>
+    <string-array name="countries_array">
+        <item>GB</item>
+        <item>US</item>
+        <item>PL</item>
+        <item>CA</item>
+        <item>AU</item>
+        <item>NZ</item>
+        <item>AT</item>
+        <item>DE</item>
+    </string-array>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
