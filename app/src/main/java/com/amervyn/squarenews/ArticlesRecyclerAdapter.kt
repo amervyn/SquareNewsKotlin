@@ -1,8 +1,10 @@
 package com.amervyn.squarenews
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.AsyncTask
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -14,16 +16,12 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import android.support.v4.content.ContextCompat.startActivity
-import android.content.Intent
-import android.net.Uri
 
 
 class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : RecyclerView.Adapter<ArticlesRecyclerAdapter.ViewHolder>() {
 
     private var aResult : ArticleResult? = null
     private var mContext : Context? = null
-    private lateinit var clickListener : View.OnClickListener
 
     init{
             aResult=aresult
@@ -46,29 +44,40 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
         holder.headlineTextView.text = articleItem.Headline
         //this.DownloadImageTask(holder.imageView).execute(articleItem.ImageUrl)
 
+        if (articleItem.ImageUrl.isNullOrEmpty() || articleItem.ImageUrl.isNullOrBlank())
+        {
+            holder.pBar.visibility = View.GONE
+            Picasso.with(mContext)
+                    .load(R.drawable.no_image)
+                    .into(holder.imageView)
+        }
+        else
+        {
+            Picasso.with(mContext)
+                    .load(articleItem.ImageUrl)
+                    .into(holder.imageView, object : Callback {
+
+                        override fun onSuccess() {
+                            holder.pBar.visibility = View.GONE
+                        }
+
+                        override fun onError() {
+                            holder.pBar.visibility = View.GONE
+                            Log.d("pBar", "Error")
+                            Picasso.with(mContext)
+                                    .load(R.drawable.no_image)
+                                    .into(holder.imageView)
+
+                        }
+                    })
+        }
+
 
         holder.itemView.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(articleItem.Url))
             mContext?.startActivity(browserIntent)
         }
 
-        Picasso.with(mContext)
-                .load(articleItem.ImageUrl)
-                .into(holder.imageView, object : Callback {
-                    override fun onSuccess() {
-                        holder.pBar.visibility = View.GONE
-                    }
-
-                    override fun onError() {
-                        Log.d("pBar", "Error")
-                        val errorUrl="https://dummyimage.com/600x400/ffffff/ff0000&text=Image+Unavailable"
-
-                        Picasso.with(mContext)
-                                .load(errorUrl)
-                                .into(holder.imageView)
-
-                    }
-                })
 
     }
 

@@ -17,7 +17,7 @@
         <Spinner
             android:id="@+id/country_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" android:spinnerMode="dialog" />
 
     </android.support.v7.widget.Toolbar>
 

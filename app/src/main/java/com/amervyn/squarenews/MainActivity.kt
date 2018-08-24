@@ -19,11 +19,10 @@ import com.google.gson.JsonParser
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import android.widget.Spinner
-
-
 
 
 class ArticleResult(val TotalResults: Int, val Articles: List<ArticleItem>) {
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     var url = "http://amervyn.duckdns.org/api/Articles/?country=GB&pageSize=50"
     private var aResult: ArticleResult? = null
-    var oldCountryParam:String = "country=GB"
+    var oldCountryParam: String = "country=GB"
 
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -51,11 +50,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val item= parent?.getItemAtPosition(position)
+        val item = parent?.getItemAtPosition(position)
 
-        url=url.replace(oldCountryParam, "country=" + item.toString())
+        url = url.replace(oldCountryParam, "country=" + item.toString())
 
-        oldCountryParam="country=" + item.toString()
+        oldCountryParam = "country=" + item.toString()
 
         Log.d("ItemSelected", "New URL: $url")
 
@@ -77,6 +76,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //callApi()
     }
 
+
+    fun refreshData(item: MenuItem) {
+        callApi()
+    }
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         //return super.onCreateOptionsMenu(menu)
 
@@ -84,24 +89,24 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         val spinner = findViewById<Spinner>(R.id.country_spinner)
         spinner.onItemSelectedListener = this
-// Create an ArrayAdapter using the string array and a default spinner layout
+        // Create an ArrayAdapter using the string array and a default spinner layout
         val adapter = ArrayAdapter.createFromResource(this,
                 R.array.countries_array, android.R.layout.simple_spinner_item)
-// Specify the layout to use when the list of choices appears
+        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-// Apply the adapter to the spinner
+        // Apply the adapter to the spinner
         spinner.adapter = adapter
 
         return true
     }
 
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         val toast = Toast.makeText(applicationContext, "calling api...", Toast.LENGTH_SHORT)
         toast.show()
         callApi()
-    }
+    }*/
 
 
     private fun callApi() {
