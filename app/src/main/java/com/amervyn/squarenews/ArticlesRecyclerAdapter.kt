@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.AsyncTask
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +20,12 @@ import android.widget.TextView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Transformation
+import java.net.URL
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : RecyclerView.Adapter<ArticlesRecyclerAdapter.ViewHolder>() {
@@ -40,10 +48,34 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
         return aResult?.Articles?.count()!!
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val articleItem= aResult?.Articles!![position]
+        var hostName=URL(articleItem.Url).host
+        hostName=hostName.toLowerCase().replace("www.", "")
+        holder.articleSource.text=hostName
         holder.headlineTextView.text = articleItem.Headline
+
+        //val t= Instant.parse(articleItem.PublishedOn)
+
+        val str_date = articleItem.PublishedOn
+
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
+        val date = formatter.parse(str_date) as Date
+        val localDate= formatter.parse(LocalDateTime.now().toString())
+
+        var diff=localDate.time-date.time
+
+        val secondsInMilli: Long = 1000
+        val minutesInMilli = secondsInMilli * 60
+        val hoursInMilli = minutesInMilli * 60
+
+        val elapsedHours = diff / hoursInMilli
+
+        holder.articleAge.text=elapsedHours.toString() + " hours ago"
+
+
         //this.DownloadImageTask(holder.imageView).execute(articleItem.ImageUrl)
 
         if (articleItem.ImageUrl.isNullOrEmpty() || articleItem.ImageUrl.isNullOrBlank())
@@ -187,6 +219,10 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
         var imageView: ImageView = itemView.findViewById(R.id.article_image) as ImageView
 
         var pBar : ProgressBar = itemView.findViewById(R.id.image_progress) as ProgressBar
+
+        var articleSource:TextView=itemView.findViewById(R.id.article_source) as TextView
+
+        var articleAge:TextView=itemView.findViewById(R.id.article_age) as TextView
         // to access the context from any ViewHolder instance.
 
     }
