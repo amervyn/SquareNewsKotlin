@@ -23,6 +23,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import android.widget.Spinner
+import java.util.*
+import android.widget.ArrayAdapter
+
+
+
+
 
 
 class ArticleResult(val TotalResults: Int, val Articles: List<ArticleItem>) {
@@ -38,28 +44,15 @@ class ArticleItem(val ArticleId: Int, val SourceId: Int, val NewsApiSourceId: St
 }
 
 
-class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+
+class MainActivity : AppCompatActivity() {
 
     var url = "http://amervyn.duckdns.org/api/Articles/?country=GB&pageSize=50"
+    var countryUrl = "http://amervyn.duckdns.org/api/NewsSources"
     private var aResult: ArticleResult? = null
     var oldCountryParam: String = "country=GB"
-
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val item = parent?.getItemAtPosition(position)
-
-        url = url.replace(oldCountryParam, "country=" + item.toString())
-
-        oldCountryParam = "country=" + item.toString()
-
-        Log.d("ItemSelected", "New URL: $url")
-
-        callApi()
-    }
+    private val client = OkHttpClient()
+    val spinnerMap = HashMap<Int, String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +67,70 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //supportActionBar?.setDisplayUseLogoEnabled(true)
 
         //callApi()
+
+        getCountries()
+
+    }
+
+    private fun getCountries() {
+        val request = Request.Builder()
+                .url(countryUrl)
+                .build()
+
+        // Get a handler that can be used to post to the main thread
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call?, e: IOException?) {
+
+            }
+
+            override fun onResponse(call: Call?, response: Response?) {
+                if(response!!.isSuccessful){
+                    val responseData = response!!.body()?.string()
+                    val parser = JsonParser()
+                    val mJson = parser.parse(responseData)
+                    val gson = GsonBuilder().create()
+                    val countries = gson.fromJson(mJson, Array<String>::class.java)
+                    val spinnerArray= arrayOfNulls<String>(countries.size)
+
+                    for (i in 0 until countries.size) {
+                        spinnerMap[i] = countries[i]
+                        spinnerArray[i] = GetCountryCode(countries[i])
+                    }
+
+                    val spinner = findViewById<Spinner>(R.id.country_spinner)
+                    //spinner.onItemSelectedListener =
+
+                    spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+
+                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                            val item = spinnerMap[parent?.selectedItemPosition]
+
+                            url = url.replace(oldCountryParam, "country=" + item.toString())
+
+                            oldCountryParam = "country=" + item.toString()
+
+                            Log.d("ItemSelected", "New URL: $url")
+
+                            callApi()
+
+                        }
+
+                    }
+
+                    // Create an ArrayAdapter using the string array and a default spinner layout
+
+                    runOnUiThread {
+                        val adapter = ArrayAdapter<String>(applicationContext, android.R.layout.simple_spinner_item, spinnerArray)
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        spinner.adapter = adapter
+                    }
+
+                }
+            }
+        })
     }
 
 
@@ -84,20 +141,14 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         //return super.onCreateOptionsMenu(menu)
-
         menuInflater.inflate(R.menu.menu_main, menu)
-
-        val spinner = findViewById<Spinner>(R.id.country_spinner)
-        spinner.onItemSelectedListener = this
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        val adapter = ArrayAdapter.createFromResource(this,
-                R.array.countries_array, android.R.layout.simple_spinner_item)
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Apply the adapter to the spinner
-        spinner.adapter = adapter
-
         return true
+    }
+
+
+    private fun GetCountryCode(countryCode: String): String? {
+        val loc = Locale("", countryCode)
+        return loc.displayCountry
     }
 
 
@@ -116,7 +167,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //val proxyTest = Proxy(Proxy.Type.HTTP, InetSocketAddress("192.168.51.99", 3128))
 
         //val builder= OkHttpClient.Builder().proxy(proxyTest)
-        val client = OkHttpClient()
 
         val request = Request.Builder()
                 .url(url)

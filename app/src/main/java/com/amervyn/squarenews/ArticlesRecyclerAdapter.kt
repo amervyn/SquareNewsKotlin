@@ -11,11 +11,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Transformation
 
 
 class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : RecyclerView.Adapter<ArticlesRecyclerAdapter.ViewHolder>() {
@@ -48,13 +50,13 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
         {
             holder.pBar.visibility = View.GONE
             Picasso.with(mContext)
-                    .load(R.drawable.no_image)
+                    .load(R.drawable.no_image).transform(CropMiddleFirstPixelTransformation())
                     .into(holder.imageView)
         }
         else
         {
             Picasso.with(mContext)
-                    .load(articleItem.ImageUrl)
+                    .load(articleItem.ImageUrl).transform(CropMiddleFirstPixelTransformation())
                     .into(holder.imageView, object : Callback {
 
                         override fun onSuccess() {
@@ -65,7 +67,7 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
                             holder.pBar.visibility = View.GONE
                             Log.d("pBar", "Error")
                             Picasso.with(mContext)
-                                    .load(R.drawable.no_image)
+                                    .load(R.drawable.no_image).transform(CropMiddleFirstPixelTransformation())
                                     .into(holder.imageView)
 
                         }
@@ -74,12 +76,97 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
 
 
         holder.itemView.setOnClickListener {
+            //val myWebView: WebView =it.findViewById(R.id.webview)
+
+            //myWebView.loadUrl("http://www.example.com")
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(articleItem.Url))
             mContext?.startActivity(browserIntent)
         }
 
 
     }
+
+
+    inner class CropMiddleFirstPixelTransformation : Transformation {
+        private var mWidth: Int = 0
+        private var mHeight: Int = 0
+
+
+        override fun transform(source: Bitmap): Bitmap {
+            val width = source.width
+            val height = source.height
+
+            val horizontalMiddleArray = IntArray(width)
+            source.getPixels(horizontalMiddleArray, 0, width, 0, height / 2, width, 1)
+
+            val verticalMiddleArray = IntArray(height)
+            source.getPixels(verticalMiddleArray, 0, 1, width / 2, 0, 1, height)
+
+            val left = getFirstNonWhitePosition(horizontalMiddleArray)
+            val right = getLastNonWhitePosition(horizontalMiddleArray)
+
+            val top = getFirstNonWhitePosition(verticalMiddleArray)
+            val bottom = getLastNonWhitePosition(verticalMiddleArray)
+
+            mWidth = right - left
+            mHeight = bottom - top
+
+
+            if (!isNegative(left, right, top, bottom)) {
+                return source
+            }
+
+            val bitmap = Bitmap.createBitmap(source, left, top, mWidth, mHeight)
+            source.recycle()
+            return bitmap
+
+        }
+
+        private fun isNegative(vararg values: Int): Boolean {
+            for (i in values) {
+                if (i < 0) {
+                    return false
+                }
+            }
+            return true
+
+        }
+
+        private fun getFirstNonWhitePosition(horizontalMiddleArray: IntArray): Int {
+            var left = 0
+            for (i in horizontalMiddleArray.indices) {
+                if (i == 0) {
+                    left = horizontalMiddleArray[i]
+                }
+                if (left != horizontalMiddleArray[i]) {
+                    return i
+                }
+            }
+            return -1
+        }
+
+        private fun getLastNonWhitePosition(horizontalMiddleArray: IntArray): Int {
+            var right = 0
+            val length = horizontalMiddleArray.size
+            for (i in length - 1 downTo 1) {
+                if (i == length - 1) {
+                    right = horizontalMiddleArray[i]
+                }
+                if (right != horizontalMiddleArray[i]) {
+                    return i
+                }
+            }
+            return -1
+        }
+
+
+        override fun key(): String {
+            return "CropMiddleFirstPixelTransformation(width=$mWidth, height=$mHeight)"
+        }
+    }
+
+
+
 
     inner class ViewHolder// We also create a constructor that accepts the entire item row
     // and does the view lookups to find each subview
@@ -105,6 +192,7 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
     }
 
 
+    //DEPRECATED
     internal inner class DownloadImageTask(var bmImage: ImageView) : AsyncTask<String, Void, Bitmap>() {
 
         override fun onPreExecute() {
