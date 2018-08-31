@@ -9,15 +9,52 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/colorWhite"
-        app:logo="@drawable/ic_fishnews_home"
-        android:minHeight="?attr/actionBarSize">
+        app:logo="@drawable/ic_fishnews_home">
 
-        <Spinner
+        <!--<Spinner
             android:id="@+id/country_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:spinnerMode="dialog" />
+            android:layout_height="wrap_content" android:spinnerMode="dialog" />-->
+
+
+        <ImageView
+            android:id="@+id/img_globe"
+            android:layout_gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/action_icon_height"
+            android:scaleType="centerInside"
+            android:paddingLeft="10dp"
+            android:src="@drawable/ic_action_country"
+            android:onClick="openCountrySelection"/>
+
+        <TextView
+            android:id="@+id/action_selected_country"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/action_icon_height" android:text="United Kingdom"
+            android:paddingLeft="5dp"
+            android:gravity="start" android:fontFamily="sans-serif" android:textColor="@color/colorBlack" android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/img_settings"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:scaleType="centerInside"
+            android:paddingRight="3dp"
+            android:src="@drawable/ic_action_settings"/>
+
+        <ImageView
+            android:id="@+id/img_refresh"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/action_icon_height"
+            android:scaleType="centerInside"
+            android:paddingRight="20dp"
+            android:onClick="refreshData"
+            android:src="@drawable/ic_action_refresh"/>
+
 
     </android.support.v7.widget.Toolbar>
 

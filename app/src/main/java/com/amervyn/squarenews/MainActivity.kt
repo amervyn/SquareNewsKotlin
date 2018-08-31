@@ -10,6 +10,7 @@ import org.json.JSONObject
 import java.io.IOException
 import android.R.attr.duration
 import android.R.attr.layout
+import android.support.v4.app.DialogFragment
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -66,76 +67,42 @@ class MainActivity : AppCompatActivity() {
         //supportActionBar?.setDisplayShowHomeEnabled(true)
         //supportActionBar?.setDisplayUseLogoEnabled(true)
 
-        //callApi()
+        callApi()
 
         getCountries()
 
     }
 
     private fun getCountries() {
-        val request = Request.Builder()
-                .url(countryUrl)
-                .build()
 
-        // Get a handler that can be used to post to the main thread
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
-
-            }
-
-            override fun onResponse(call: Call?, response: Response?) {
-                if(response!!.isSuccessful){
-                    val responseData = response!!.body()?.string()
-                    val parser = JsonParser()
-                    val mJson = parser.parse(responseData)
-                    val gson = GsonBuilder().create()
-                    val countries = gson.fromJson(mJson, Array<String>::class.java)
-                    val spinnerArray= arrayOfNulls<String>(countries.size)
-
-                    for (i in 0 until countries.size) {
-                        spinnerMap[i] = countries[i]
-                        spinnerArray[i] = GetCountryCode(countries[i])
-                    }
-
-                    val spinner = findViewById<Spinner>(R.id.country_spinner)
-                    //spinner.onItemSelectedListener =
-
-                    spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                        }
-
-                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                            val item = spinnerMap[parent?.selectedItemPosition]
-
-                            url = url.replace(oldCountryParam, "country=" + item.toString())
-
-                            oldCountryParam = "country=" + item.toString()
-
-                            Log.d("ItemSelected", "New URL: $url")
-
-                            callApi()
-
-                        }
-
-                    }
-
-                    // Create an ArrayAdapter using the string array and a default spinner layout
-
-                    runOnUiThread {
-                        val adapter = ArrayAdapter<String>(applicationContext, android.R.layout.simple_spinner_item, spinnerArray)
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        spinner.adapter = adapter
-                    }
-
-                }
-            }
-        })
     }
 
 
-    fun refreshData(item: MenuItem) {
+    fun refreshData(item: View) {
         callApi()
+    }
+
+
+    fun openCountrySelection(item: View)
+    {
+
+        val fm = this@MainActivity.fragmentManager
+        val countrySelectDialogFragment = CountrySelectDialogFragment().newInstance()
+        countrySelectDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen)
+
+        countrySelectDialogFragment.setOnListItemSelectedListener(object : ItemClickListener{
+            override fun onItemClick(countryCode: String, countryName: String) {
+                url = url.replace(oldCountryParam, "country=$countryCode")
+                oldCountryParam = "country=$countryCode"
+                var countryActionLabel=this@MainActivity.findViewById(R.id.action_selected_country) as TextView
+                countryActionLabel?.text=countryName
+                callApi()
+            }
+
+        })
+
+        countrySelectDialogFragment.show(fm, "fragment_select_country")
+
     }
 
 
@@ -143,12 +110,6 @@ class MainActivity : AppCompatActivity() {
         //return super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
-    }
-
-
-    private fun GetCountryCode(countryCode: String): String? {
-        val loc = Locale("", countryCode)
-        return loc.displayCountry
     }
 
 

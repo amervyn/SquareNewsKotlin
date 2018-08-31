@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_refresh_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/maps/ic_pin_drop_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -56,7 +56,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="imageAsset" value="C:\Users\anto.mervyn\Downloads\fish-icon.png" />
-                                      <entry key="outputName" value="ic_action_refresh" />
+                                      <entry key="outputName" value="ic_action_country" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="000000" />
                                     </map>
