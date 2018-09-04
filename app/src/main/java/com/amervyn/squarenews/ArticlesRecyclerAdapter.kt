@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.ShareActionProvider
 import android.widget.TextView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -107,7 +108,7 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
         }
 
 
-        holder.itemView.setOnClickListener {
+        holder.imageView.setOnClickListener {
             //val myWebView: WebView =it.findViewById(R.id.webview)
 
             //myWebView.loadUrl("http://www.example.com")
@@ -115,6 +116,20 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
             mContext?.startActivity(browserIntent)
         }
 
+        holder.articleShare.setOnClickListener {
+            //val myWebView: WebView =it.findViewById(R.id.webview)
+            //myWebView.loadUrl("http://www.example.com")
+
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, articleItem.Url)
+                type = "text/plain"
+            }
+            mContext?.startActivity(Intent.createChooser(sendIntent, "Share via:"))
+
+            /*val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(articleItem.Url))
+            mContext?.startActivity(browserIntent)*/
+        }
 
     }
 
@@ -204,9 +219,9 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
     // and does the view lookups to find each subview
     (itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        init{
+       /* init{
             itemView.setOnClickListener(this)
-        }
+        }*/
 
         override fun onClick(v: View?) {
             Log.d("RecyclerView", "CLICK")
@@ -224,6 +239,12 @@ class ArticlesRecyclerAdapter(context: Context, aresult: ArticleResult) : Recycl
 
         var articleAge:TextView=itemView.findViewById(R.id.article_age) as TextView
         // to access the context from any ViewHolder instance.
+
+        var articleShare:ImageView=itemView.findViewById(R.id.img_share) as ImageView
+
+        var articleComments:ImageView=itemView.findViewById(R.id.img_comments) as ImageView
+
+        var articleFav:ImageView=itemView.findViewById(R.id.img_fav) as ImageView
 
     }
 

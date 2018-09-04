@@ -113,14 +113,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    /*override fun onResume() {
-        super.onResume()
-        val toast = Toast.makeText(applicationContext, "calling api...", Toast.LENGTH_SHORT)
-        toast.show()
-        callApi()
-    }*/
-
-
     private fun callApi() {
 
         println("loading articles...")

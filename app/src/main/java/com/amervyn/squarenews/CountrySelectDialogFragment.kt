@@ -92,6 +92,9 @@ class CountrySelectDialogFragment : DialogFragment() {
 
     private fun GetCountryName(countryCode: String): String? {
         val loc = Locale("", countryCode)
+        if(countryCode=="ZH")
+            return "Chinese"
+
         return loc.displayCountry
     }
 
@@ -128,7 +131,8 @@ class CountrySelectDialogFragment : DialogFragment() {
                     }
 
 
-                    lv?.onItemClickListener= AdapterView.OnItemClickListener { p0, p1, p2, p3 ->
+                    lv?.onItemClickListener= AdapterView.OnItemClickListener { p0, _, p2, _ ->
+
                         val item=p0?.getItemAtPosition(p2)
                         countryName=item.toString()
 
@@ -137,6 +141,7 @@ class CountrySelectDialogFragment : DialogFragment() {
                         countryCode=code.toString()
 
                         mListener?.onItemClick(countryCode,countryName)
+
                         dismiss()
                     }
 
@@ -149,6 +154,10 @@ class CountrySelectDialogFragment : DialogFragment() {
                                     android.R.layout.simple_list_item_1,
                                     spinnerArray
                             )
+
+                            /*adapter.sort { lhs, rhs ->
+                                lhs.compareTo(rhs)   //or whatever your sorting algorithm
+                            }*/
 
                             //arraylist Append
                             lv!!.adapter = adapter
