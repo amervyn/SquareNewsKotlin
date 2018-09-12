@@ -130,7 +130,6 @@ class CountrySelectDialogFragment : DialogFragment() {
                         spinnerArray[i] = GetCountryName(countries[i])
                     }
 
-
                     lv?.onItemClickListener= AdapterView.OnItemClickListener { p0, _, p2, _ ->
 
                         val item=p0?.getItemAtPosition(p2)
@@ -144,7 +143,6 @@ class CountrySelectDialogFragment : DialogFragment() {
 
                         dismiss()
                     }
-
 
                     if(isAdded)
                     {

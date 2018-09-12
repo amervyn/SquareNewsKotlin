@@ -1,98 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    android:id="@+id/drawer_layout">
+    <!--tools:context=".MainActivity">-->
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorWhite"
-        app:logo="@drawable/ic_fishnews_home">
-
-        <!--<Spinner
-            android:id="@+id/country_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:spinnerMode="dialog" />-->
-
-
-        <ImageView
-            android:id="@+id/img_globe"
-            android:layout_gravity="start"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/action_icon_height"
-            android:scaleType="centerInside"
-            android:paddingLeft="10dp"
-            android:src="@drawable/ic_action_country"
-            android:onClick="openCountrySelection"/>
-
-        <TextView
-            android:id="@+id/action_selected_country"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/action_icon_height" android:text="United Kingdom"
-            android:paddingLeft="5dp"
-            android:gravity="start" android:fontFamily="sans-serif" android:textColor="@color/colorBlack" android:textStyle="bold"/>
-
-        <ImageView
-            android:id="@+id/img_settings"
-            android:layout_gravity="end"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:scaleType="centerInside"
-            android:paddingRight="3dp"
-            android:src="@drawable/ic_action_settings"/>
-
-        <ImageView
-            android:id="@+id/img_refresh"
-            android:layout_gravity="end"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/action_icon_height"
-            android:scaleType="centerInside"
-            android:paddingRight="20dp"
-            android:onClick="refreshData"
-            android:src="@drawable/ic_action_refresh"/>
-
-
-    </android.support.v7.widget.Toolbar>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvArticles"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-
-
-    <!--<fragment
-        android:id="@+id/articles_fragment"
-        android:name="com.amervyn.squarenews.ArticleFragment"
-        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
+        android:orientation="vertical">
 
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:paddingTop="6dp"
+            android:fitsSystemWindows="true"
+            android:background="@color/colorWhite">
+
+
+            <TextView
+                android:id="@+id/action_selected_country"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/action_icon_height" android:text="United Kingdom"
+                android:paddingLeft="20dp" android:onClick="openCountrySelection"
+                android:textSize="16dp"
+                android:gravity="start" android:fontFamily="sans-serif" android:textColor="@color/colorBlack" android:textStyle="bold"/>
+
+
+
+            <ImageView
+                android:id="@+id/img_refresh"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:paddingRight="3dp"
+                android:onClick="refreshData"
+                android:src="@drawable/ic_my_account"/>
+
+            <ImageView
+                android:id="@+id/img_filter"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:paddingRight="20dp"
+                android:src="@drawable/ic_article_filter"/>
+
+
+            <ImageView
+                android:id="@+id/img_settings"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:paddingRight="20dp"
+                android:src="@drawable/ic_search"/>
+
+        </android.support.v7.widget.Toolbar>
+
+
+        <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/content_frame">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvArticles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
+            <!--app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />-->
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+
+
+    <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_view"
+        app:headerLayout="@layout/drawer_header"/>
+
+
+</android.support.v4.widget.DrawerLayout>
