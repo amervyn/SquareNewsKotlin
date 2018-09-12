@@ -19,8 +19,8 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:paddingTop="6dp"
+            android:layout_height="30dp"
+            android:paddingTop="5dp"
             android:fitsSystemWindows="true"
             android:background="@color/colorWhite">
 
@@ -29,7 +29,7 @@
                 android:id="@+id/action_selected_country"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/action_icon_height" android:text="United Kingdom"
-                android:paddingLeft="20dp" android:onClick="openCountrySelection"
+                android:layout_marginRight="10dp" android:onClick="openCountrySelection"
                 android:textSize="16dp"
                 android:gravity="start" android:fontFamily="sans-serif" android:textColor="@color/colorBlack" android:textStyle="bold"/>
 
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:scaleType="centerInside"
-                android:paddingRight="20dp"
+                android:paddingRight="18dp"
                 android:src="@drawable/ic_article_filter"/>
 
 
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:scaleType="centerInside"
-                android:paddingRight="20dp"
+                android:paddingRight="18dp"
                 android:src="@drawable/ic_search"/>
 
         </android.support.v7.widget.Toolbar>
