@@ -106,6 +106,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    override fun onBackPressed() {
+        if (this.mDrawerLayout.isDrawerVisible(GravityCompat.START)) {
+            this.mDrawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     fun refreshData(item: View) {
         callApi()
     }

@@ -19,8 +19,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:paddingTop="5dp"
+            android:layout_height="35dp"
             android:fitsSystemWindows="true"
             android:background="@color/colorWhite">
 
@@ -39,17 +38,17 @@
                 android:id="@+id/img_refresh"
                 android:layout_gravity="end"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="18dp"
                 android:scaleType="centerInside"
                 android:paddingRight="3dp"
                 android:onClick="refreshData"
-                android:src="@drawable/ic_my_account"/>
+                android:src="@drawable/ic_action_refresh"/>
 
             <ImageView
                 android:id="@+id/img_filter"
                 android:layout_gravity="end"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="18dp"
                 android:scaleType="centerInside"
                 android:paddingRight="18dp"
                 android:src="@drawable/ic_article_filter"/>
@@ -59,7 +58,7 @@
                 android:id="@+id/img_settings"
                 android:layout_gravity="end"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="18dp"
                 android:scaleType="centerInside"
                 android:paddingRight="18dp"
                 android:src="@drawable/ic_search"/>
